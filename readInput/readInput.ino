@@ -9,8 +9,8 @@ int bluePin = 0;
 
 int xVal = 0;
 int yVal = 0;
-int buttonState = 0;
-int switchState = 0;
+int prevButtonState = 0, buttonState = 0;
+int prevSwitchState = 0, switchState = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -29,24 +29,51 @@ void loop() {
   // put your main code here, to run repeatedly:
   yVal = analogRead(yPin);
   xVal = analogRead(xPin);
+  prevButtonState = buttonState;
+  prevSwitchState = switchState;
   buttonState = digitalRead(buttonPin);
   switchState = digitalRead(switchPin);
 
   printStates();
-  delay(1000);
+  delay(20);
   // use map to chane rgb colors
   // outputValue = map(sensorValue, 0, 1023, 0, 255);
 
 }
 
 void printStates() {
-//  Serial.print("X Val: ");
-//  Serial.print(xVal);
-//  Serial.print(" | Y Val: ");
-//  Serial.println(yVal);
+  if (xVal < 1000) { // reached lower threshold 
+    if (yVal < 1000) // go lower-left
+      Serial.write(41); 
+    else if (yVal > 3500) // go upper-right
+      Serial.write(42);
+    else 
+      Serial.write(10);
+  }
+  else if (xVal > 3500) { // reached upper threshold
+    if (yVal < 1000) 
+      Serial.write(43);
+    else if (yVal > 3500)
+      Serial.write(44);
+    else
+      Serial.write(20);
+  }
+  
+  if (yVal < 1000) {
+    Serial.write(30);
+  }
+  else if (yVal > 3500) {
+    Serial.write(40);
+  }
 
-  Serial.print("Button State: ");
-  Serial.println(buttonState);
-  Serial.print("Swtich State: ");
-  Serial.println(switchState);
+  if (prevButtonState != buttonState) { // state change
+//    Serial.print("Button State: ");
+//    Serial.println(buttonState);
+    Serial.write(50);
+  }
+  if (prevSwitchState != switchState) {
+//    Serial.print("Swtich State: ");
+//    Serial.println(switchState);
+    Serial.write(60);
+  }
 }
