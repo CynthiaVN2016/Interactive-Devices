@@ -5,15 +5,16 @@ int switchPin = 39;
 
 // setting PWM properties
 const int freq = 5000;
-const int redLedChannel = 0;
-const int greenLedChannel = 1;
-const int blueLedChannel = 2;
+const int redLEDChannel = 0;
+const int greenLEDChannel = 1;
+const int blueLEDChannel = 2;
 const int resolution = 8;
 
-int redPin = 19, redValue = 255;
-int greenPin = 18, greenValue = 255;
-int bluePin = 5, blueValue = 255;
-int selectedLED = redLedChannel;
+int rgbValues[3] = {255, 255, 255};
+int redPin = 19;
+int greenPin = 18;
+int bluePin = 5;
+int selectedLED = redLEDChannel;
 
 int xVal = 0;
 int yVal = 0;
@@ -31,16 +32,16 @@ void setup() {
   pinMode(greenPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
   
-  ledcSetup(redLedChannel, freq, resolution);
-  ledcSetup(greenLedChannel, freq, resolution);
-  ledcSetup(blueLedChannel, freq, resolution);
-  ledcAttachPin(redPin, redLedChannel);
-  ledcAttachPin(greenPin, greenLedChannel);
-  ledcAttachPin(bluePin, blueLedChannel);
+  ledcSetup(redLEDChannel, freq, resolution);
+  ledcSetup(greenLEDChannel, freq, resolution);
+  ledcSetup(blueLEDChannel, freq, resolution);
+  ledcAttachPin(redPin, redLEDChannel);
+  ledcAttachPin(greenPin, greenLEDChannel);
+  ledcAttachPin(bluePin, blueLEDChannel);
 
-  ledcWrite(redLedChannel, 255);
-  ledcWrite(greenLedChannel, 255);
-  ledcWrite(blueLedChannel, 255);
+  ledcWrite(redLEDChannel, 255);
+  ledcWrite(greenLEDChannel, 255);
+  ledcWrite(blueLEDChannel, 255);
 }
 
 void loop() {
@@ -63,7 +64,7 @@ void loop() {
 //    delay(10);
 //  }
 
-  delay(800); // delay has to be longer if selecting colors
+  delay(800); // delay has to be longer if selecting colors, but shorter for drawing mode
   // use map to chane rgb colors
   // outputValue = map(sensorValue, 0, 1023, 0, 255);
 
@@ -96,80 +97,32 @@ void printStates() {
 
   // Testing out LED manipulation
   if (xVal < 500) { // reached lower threshold 
-     switch(selectedLED) { 
-      case redLedChannel: 
-        selectedLED = blueLedChannel;
-        break;
-       case greenLedChannel: 
-        selectedLED = redLedChannel;
-        break;
-       case blueLedChannel: 
-        selectedLED = greenLedChannel;
-        break;
-     }
+     selectedLED = (selectedLED + 2) % 3;
   }
   else if (xVal > 3500) { // reached upper threshold
-     switch(selectedLED) { 
-      case redLedChannel: 
-        selectedLED = greenLedChannel;
-        break;
-       case greenLedChannel: 
-        selectedLED = blueLedChannel;
-        break;
-       case blueLedChannel: 
-        selectedLED = redLedChannel;
-        break;
-     }
+     selectedLED = (selectedLED + 1) % 3;
   }
 
   Serial.println(selectedLED);
   
   if (yVal < 500) {
-    switch(selectedLED) { 
-      case redLedChannel: 
-        redValue = redValue - 25;
-        if (redValue < 0) 
-           redValue = 0;
-        break;
-       case greenLedChannel: 
-        greenValue = greenValue - 25;
-        if (greenValue < 0) 
-           greenValue = 0;
-        break; 
-       case blueLedChannel: 
-        blueValue = blueValue - 25;
-        if (blueValue < 0) 
-           blueValue = 0;
-        break;
-     }
+    rgbValues[selectedLED] = rgbValues[selectedLED] - 25;
+    if (rgbValues[selectedLED] < 0)
+      rgbValues[selectedLED] = 0;
   }
   else if (yVal > 3500) {
-     switch(selectedLED) { 
-      case redLedChannel: 
-        redValue = redValue + 25;
-        if (redValue > 255) 
-           redValue = 255;
-        break;
-       case greenLedChannel: 
-        greenValue = greenValue + 25;
-        if (greenValue > 255) 
-           greenValue = 255;
-        break; 
-       case blueLedChannel: 
-        blueValue = blueValue + 25;
-        if (blueValue > 255) 
-           blueValue = 255;
-        break;
-     }
+     rgbValues[selectedLED] = rgbValues[selectedLED] + 25;
+    if (rgbValues[selectedLED] > 255)
+      rgbValues[selectedLED] = 255;
   }
 
-  Serial.print(redValue);
-  Serial.print(greenValue);
-  Serial.println(blueValue);
+  Serial.print(rgbValues[redLEDChannel]);
+  Serial.print(rgbValues[greenLEDChannel]);
+  Serial.println(rgbValues[blueLEDChannel]);
 
-  ledcWrite(redLedChannel, redValue);
-  ledcWrite(greenLedChannel, greenValue);
-  ledcWrite(blueLedChannel, blueValue);
+  ledcWrite(redLEDChannel, rgbValues[redLEDChannel]);
+  ledcWrite(greenLEDChannel, rgbValues[greenLEDChannel]);
+  ledcWrite(blueLEDChannel, rgbValues[blueLEDChannel]);
   
   if (prevButtonState != buttonState) { // state change
     Serial.write(50);
