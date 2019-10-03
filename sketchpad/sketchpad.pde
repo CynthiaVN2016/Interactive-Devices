@@ -1,23 +1,18 @@
-import controlP5.*;
-import cc.arduino.*;
-import org.firmata.*;
-
 import processing.serial.*;
+
 String val;
 Serial myPort;
-Arduino arduino;
 int xVal = 0, yVal = 0;
 boolean buttonState = false, switchState = false;
 int xPin = 34, yPin = 35, buttonPin = 36, switchPin = 8;
 int prevXPos, prevYPos, xPos, yPos;
-int r = 255, g = 255, b = 255;
+int[] rgbValues = {255, 255, 255};
 
 void setup() { 
   //fullScreen();
   size(400,400);
   noStroke();
   println(Serial.list());
-  println(Arduino.list());
   xPos = width/2;
   prevXPos = width/2;
   yPos = height/2;
@@ -29,10 +24,10 @@ void setup() {
 }
 
 void draw() {
-  
+    
   if (myPort.available() > 0) {
     int info = myPort.read(); 
-      //println(info);
+      println(info);
       
     switch(info) {
       case 10: // negative x value
@@ -106,18 +101,23 @@ void draw() {
       case 50: // change in button state
         buttonState = !buttonState;
         break;
-      case 60: // change in switch state
+      case 1: // change in switch state -- color picking mode
         switchState = !switchState;
-        if (switchState) // drawing mode
-           background(50, 50, 50);
-        else // color picking mode
-          background(150, 150, 150);
+        break;
+      case 0: // drawing mode
+        switchState = !switchState;
+        for (int col = 0; col < 3; col++) {
+          int colVal = myPort.read();
+          println(colVal);
+          rgbValues[col] = colVal; 
+        }
+        stroke(rgbValues[0], rgbValues[1], rgbValues[2]);
         break;
     }
     
     if (buttonState) { // start drawing
       line(prevXPos, prevYPos, xPos, yPos);
-      println("(" + prevXPos + ", " + prevYPos + ") --> (" + xPos + ", " + yPos + ")");
+      //println("(" + prevXPos + ", " + prevYPos + ") --> (" + xPos + ", " + yPos + ")");
     }
   }
 }
