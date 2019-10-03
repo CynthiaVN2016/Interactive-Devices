@@ -106,6 +106,7 @@ void draw() {
         break;
       case 0: // drawing mode
         switchState = !switchState;
+        // read in new rgb values coming
         for (int col = 0; col < 3; col++) {
           int colVal = myPort.read();
           println(colVal);
