@@ -46,7 +46,7 @@ Once the wiring was complete, I worked on the ESP32 until I was able to read in 
 The enclosure ended up being a simple box after much deliberation. Due to it being my first time using hardware, I decided to go down a simpler path with my enclosure to ensure the functionality of my device without having to worry about the enclosure obstructing any part of the device.
 
 The inside of the enclosure
-![alt text](IMG_0349 "The inside of the enclosure")
+![Enclosure](/IMG_0349.jpg)
 
 <a name="result"/>
 
@@ -66,7 +66,7 @@ The switch has two modes:
     * i.e. Dimming the blue light makes the blue value smaller, which essentially starts to remove blue from the line color 
   * Move joystick left and right to select an LED, and move it up and down to change the brightness
 
-![alt text](./IMG_0360 "The inside of the enclosure")
+![Final](/IMG_0360.jpg)
 
 <a name="demo"/>
 
