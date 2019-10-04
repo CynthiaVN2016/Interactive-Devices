@@ -15,7 +15,7 @@
 
 ## Objective 
 
-Build a "perfomable device" while satisfying all the requirements below. 
+Build a "performable device" while satisfying all the requirements below. 
 
 * Use resources available (SPST switch, momentary button, analog joystick)
 * Device must have an enclosure or enclosures
@@ -25,7 +25,7 @@ Build a "perfomable device" while satisfying all the requirements below.
 
 ## Development
 
-I love drawing and art, and I ended up gravitating towards a visual piece--more specifically, a piece where the user has a lot of control. Since the project involved working heavily with hardware, wiring, etc.--all of which I had no experience with--I decided to use Processing, a software I used in my previous project to ease the load of learning new software while allowing me to have visual component to the project. With that in mind, I decided to make an etch a sketch. It utilizes Processing that runs on the Raspberry Pi 3B+ while taking in signal from a button, swtich, and joystick through the ESP32 to create art.
+I love drawing and art, and I ended up gravitating towards a visual piece--more specifically, a piece where the user has a lot of control. Since the project involved working heavily with hardware, wiring, etc.--all of which I had no experience with--I decided to use Processing, a software I used in my previous project to ease the load of learning new software while allowing me to have visual component to the project. With that in mind, I decided to make an etch a sketch. It utilizes Processing that runs on the Raspberry Pi 3B+ while taking in signal from a button, switch, and joystick through the ESP32 to create art.
 
 <a name="code"/>
 
@@ -37,19 +37,22 @@ The first part of the development was to learn how to wire the inputs using a br
 
 #### Code 
 
-Once the wiring was complete, I worked on the ESP32 until I was able to read in inputs from all 3 resources succesfully, then worked on establishing a serial connection between the ESP32 and Processing. I was able to take the inputs to start drawing basic lines; however at this point, I did not use the switch signal for anything. With that in mind, I decided to create two states in my program: a drawing mode and a color picking mode. To add more clarity to the user, I incorporated 3 LED lights into my device, and that involved use Arduino's Pulse Width Modulation. Explanations on the states will be discussed under the result section. Once everything worked on my laptop, I set up a connection between my Raspberry Pi and ESP32 to eventually run on a monitor. I used VNC viewer to order to visually work on my Rasperry Pi. 
+Once the wiring was complete, I worked on the ESP32 until I was able to read in inputs from all 3 resources successfully, then worked on establishing a serial connection between the ESP32 and Processing. I was able to take the inputs to start drawing basic lines; however at this point, I did not use the switch signal for anything. With that in mind, I decided to create two states in my program: a drawing mode and a color picking mode. To add more clarity to the user, I incorporated 3 LED lights into my device, and that involved use Arduino's Pulse Width Modulation. Explanations on the states will be discussed under the result section. Once everything worked on my laptop, I set up a connection between my Raspberry Pi and ESP32 to eventually run on a monitor. I used VNC viewer to order to visually work on my Raspberry Pi. 
 
 <a name="enclosure"/>
 
 #### Enclosure
 
-The enclosure ended up being a simple box after much deliberation. Due to it being my first time using hardware, I decided to go down a simpler path with my enclosure to ensure the functionality of my device without having to worry about the enclosure obstructing any part of the deivce.
+The enclosure ended up being a simple box after much deliberation. Due to it being my first time using hardware, I decided to go down a simpler path with my enclosure to ensure the functionality of my device without having to worry about the enclosure obstructing any part of the device.
+
+The inside of the enclosure
+![alt text](IMG_0349 "The inside of the enclosure")
 
 <a name="result"/>
 
 ### Result 
 
-The goal was to emulate an environment and tool for the user to draw freely and comfortably, in a more natural setting. Of course, since we are drawing digitally, I decided to make the enclosure and presentation of the device more "natural" looking by giving it a wooden appearance that freqeuently appears in a setting where an artist is using real paints (wooden floors, brush handles, easels, etc.) 
+The goal was to emulate an environment and tool for the user to draw freely and comfortably, in a more natural setting. Of course, since we are drawing digitally, I decided to make the enclosure and presentation of the device more "natural" looking by giving it a wooden appearance that frequently appears in a setting where an artist is using real paints (wooden floors, brush handles, easels, etc.) 
 
 The switch has two modes:
 
@@ -63,9 +66,14 @@ The switch has two modes:
     * i.e. Dimming the blue light makes the blue value smaller, which essentially starts to remove blue from the line color 
   * Move joystick left and right to select an LED, and move it up and down to change the brightness
 
+![alt text](./IMG_0360 "The inside of the enclosure")
+
 <a name="demo"/>
 
 ## Demo
+
+[Demo](https://youtu.be/6ISFtm9bbZ8)
+
     
 ## Challenges 
 
